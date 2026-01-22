@@ -1,1 +1,106 @@
+db = db.getSiblingDB("hrDB")
 
+/* -----------------------------
+   PART 1: CREATE
+----------------------------- */
+
+db.employees.insertOne({
+  name: "Zeel Makwana",
+  department: "Management",
+  salary: 95000,
+  position: "HR Director",
+  experience: 12
+})
+
+db.employees.insertMany([
+  {
+    name: "Riya Patel",
+    department: "Engineering",
+    position: "Software Engineer",
+    salary: 65000,
+    experience: 3
+  },
+  {
+    name: "Arjun Mehta",
+    department: "Engineering",
+    position: "Senior Software Engineer",
+    salary: 80000,
+    experience: 6
+  },
+  {
+    name: "Kavya Shah",
+    department: "Sales",
+    position: "Sales Associate",
+    salary: 55000,
+    experience: 2
+  }
+])
+
+/* -----------------------------
+   PART 2: READ
+----------------------------- */
+
+db.employees.find()
+
+db.employees.find({ salary: { $gt: 70000 } })
+
+db.employees.find({ name: "Riya Patel" })
+
+db.employees.find(
+  { department: "Engineering" },
+  { _id: 0, name: 1, salary: 1 }
+)
+
+/* -----------------------------
+   PART 3: UPDATE
+----------------------------- */
+
+db.employees.updateOne(
+  { name: "Zeel Makwana" },
+  { $set: { salary: 100000 } }
+)
+
+db.employees.updateMany(
+  { department: "Engineering" },
+  { $set: { department: "Technology" } }
+)
+
+db.employees.replaceOne(
+  { name: "Kavya Shah" },
+  {
+    name: "Kavya Shah",
+    department: "Sales",
+    salary: 60000,
+    position: "Sales Executive",
+    experience: 3
+  }
+)
+
+/* -----------------------------
+   PART 4: ADVANCED QUERIES
+----------------------------- */
+
+db.employees.find({
+  department: { $in: ["Management", "Technology"] }
+})
+
+db.employees.find({
+  $and: [
+    { experience: { $gt: 5 } },
+    { salary: { $gt: 70000 } }
+  ]
+})
+
+db.employees.find({
+  position: { $ne: "Intern" }
+})
+
+/* -----------------------------
+   PART 5: DELETE & RESET
+----------------------------- */
+
+db.employees.deleteOne({ name: "Riya Patel" })
+
+db.employees.deleteMany({ department: "Sales" })
+
+db.employees.deleteMany({})
